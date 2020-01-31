@@ -1,0 +1,13 @@
+/Assets/oculus/
+/Assets/Packages/
+/Assets/Plugins/
+/Debug/
+/Library/
+/Logs/
+/Maya Files/
+/Packages/
+/ProjectSettings/
+/Temp/
+/.vs/
+*.meta
+*.csproj

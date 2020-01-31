@@ -1,0 +1,140 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!241 &24100000
+AudioMixerController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Master
+  m_OutputGroup: {fileID: 0}
+  m_MasterGroup: {fileID: 24300002}
+  m_Snapshots:
+  - {fileID: 24500006}
+  m_StartSnapshot: {fileID: 24500006}
+  m_SuspendThreshold: -80
+  m_EnableSuspend: 1
+  m_UpdateMode: 0
+  m_ExposedParameters:
+  - guid: 71fd0f3551cf55d4db1a107c57b2e8cf
+    name: Velocity
+  - guid: dcf14f4502244b144ac76b029354aad7
+    name: Force
+  - guid: c1b695258f942414a8ef2e082b3e7fb9
+    name: Position
+  m_AudioMixerGroupViews:
+  - guids:
+    - 38039d724c5a455428db9be476743d52
+    name: View
+  m_CurrentViewIndex: 0
+  m_TargetSnapshot: {fileID: 24500006}
+--- !u!243 &24300002
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Master
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 38039d724c5a455428db9be476743d52
+  m_Children: []
+  m_Volume: 6e1a693ae5edf2248bb6fa6096cc6e0c
+  m_Pitch: 1b6c8dfd372c0034b8d36163b77f9952
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 24400004}
+  - {fileID: 1684588156147288586}
+  - {fileID: 2998441310029105600}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &24400004
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 4dd20a4c7d8f53642b1b8d13ff538948
+  m_EffectName: Attenuation
+  m_MixLevel: e2c5d41e2ab42df47885b9111b168f47
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!245 &24500006
+AudioMixerSnapshotController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Snapshot
+  m_AudioMixer: {fileID: 24100000}
+  m_SnapshotID: 0c6a4a7507b2b0d4e90d4dd4d3e450ae
+  m_FloatValues:
+    48ef21d03373b974bac87301fe7e9ea6: 0.147
+    a2bd3861c0c3a914a8862520b6137d4d: 10
+    f71b7c54eb22fc74b82335123b6ac952: 1
+    c1b695258f942414a8ef2e082b3e7fb9: 0.732
+    71fd0f3551cf55d4db1a107c57b2e8cf: 0.5
+    dcf14f4502244b144ac76b029354aad7: 0.245
+    6e1a693ae5edf2248bb6fa6096cc6e0c: 6
+    971fc0eaaacbc6244a5131a6282436b2: 0.147
+    57e9bc5bf62c5be4f91ced7d7abadd58: 0.597
+    9c2437cbb2ce776409872d358e83e26f: 5.15
+    1f32f7dbd2083714caa07a3aa637cbfb: 440
+    268d858f776f4d24e9d0fe383d944a4f: 0.992
+  m_TransitionOverrides: {}
+--- !u!244 &1684588156147288586
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: a04946d46927ec3489fc161ed782c35d
+  m_EffectName: audioplugin_TrombaMarinaPlugin
+  m_MixLevel: 2b12c7378060cd547a7b38eaa3497dc1
+  m_Parameters:
+  - m_ParameterName: Bowing Velocity
+    m_GUID: 5197e473daab89442b238c71c3329220
+  - m_ParameterName: Bowing Force (0
+    m_GUID: 3a56ec0d689ae6c4ebdf75650286efad
+  - m_ParameterName: Bowing Position
+    m_GUID: c775502d55acd8f4297e4e816be813af
+  - m_ParameterName: Force
+    m_GUID: dcf14f4502244b144ac76b029354aad7
+  - m_ParameterName: Velocity
+    m_GUID: 71fd0f3551cf55d4db1a107c57b2e8cf
+  - m_ParameterName: Position
+    m_GUID: c1b695258f942414a8ef2e082b3e7fb9
+  - m_ParameterName: Body Volume
+    m_GUID: 268d858f776f4d24e9d0fe383d944a4f
+  - m_ParameterName: String Volume
+    m_GUID: 48ef21d03373b974bac87301fe7e9ea6
+  - m_ParameterName: Bridge Volume
+    m_GUID: 971fc0eaaacbc6244a5131a6282436b2
+  - m_ParameterName: Init Frequency
+    m_GUID: f71b7c54eb22fc74b82335123b6ac952
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &2998441310029105600
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: d1db210de7d438b439fd6a07913b3785
+  m_EffectName: Highpass
+  m_MixLevel: 000652d851a67914bac07fa30b7653bd
+  m_Parameters:
+  - m_ParameterName: Cutoff freq
+    m_GUID: 1f32f7dbd2083714caa07a3aa637cbfb
+  - m_ParameterName: Resonance
+    m_GUID: f1c7f74bd87694d449d974406410236a
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
