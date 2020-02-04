@@ -17,7 +17,7 @@ public class RotationFollower : MonoBehaviour
         transform.rotation = Quaternion.AngleAxis((rightHandAnchor.transform.rotation.eulerAngles.x - 318.0f), new Vector3(-1.0f, 0.0f, 0.0f));
         //transform.rotation = Quaternion.AngleAxis((rightHandAnchor.transform.rotation.eulerAngles.y - 318.0f), new Vector3(0.0f, 0.0f, 0.0f));
         //print("controller button: "+OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.RTouch));
-        print(rightHandAnchor.transform.rotation.eulerAngles);
+        //print(rightHandAnchor.transform.rotation.eulerAngles);
     }
 
     Vector3 Calibrate (Vector3 controllerRotation)

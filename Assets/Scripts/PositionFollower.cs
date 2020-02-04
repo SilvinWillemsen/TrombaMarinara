@@ -5,7 +5,7 @@ using UnityEngine;
 public class PositionFollower : MonoBehaviour
 {
     public GameObject RightHandAnchor;
-    public float offset;
+    public Vector3 offset; //calculated at 0.2
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +15,7 @@ public class PositionFollower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(RightHandAnchor.transform.position.x, 0.74f, RightHandAnchor.transform.position.z + offset);
+        //transform.position = new Vector3(RightHandAnchor.transform.position.x, 0.74f, RightHandAnchor.transform.position.z + offset);
+        transform.position = new Vector3(RightHandAnchor.transform.position.x + offset.x, RightHandAnchor.transform.position.y + offset.y, RightHandAnchor.transform.position.z + offset.z);
     }
 }

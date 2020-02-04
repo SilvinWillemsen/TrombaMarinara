@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 
 public class MovementCompensation : MonoBehaviour
 {
-    public GameObject hapticOmniGrabber;
+    public GameObject hapticPen;
     public GameObject hapticString;
     public GameObject tiltMother;
     public GameObject rightHandAnchor;
@@ -15,28 +15,25 @@ public class MovementCompensation : MonoBehaviour
     GameObject hapticDevice;
     public float speedScalar = 0.05f;
     public float forceScalar = 0.05f;
-    Vector3 bowStringContactPoint;
-    Vector3 oldPosition;
-    Vector3 angles;
-    Vector3 stylusWorldPosition;
 
     //distance calculator variables
-    Vector3 sourceObjectPosition;
-    Collider targetCollider;
+    Vector3 nutPosition;
+    Collider stringCollider;
 
     float bowingForce;
-    float vel;
+    float vel;          //variable for temporary storing getVelocity()
     float bowNutDistance;
     float bowingSpeed;
-    float offsetDistance;
+    //float offsetDistance;
     float maxForce = 0.2f;
     float maxStiffness = 0.2f;
 
     bool inFrontOfBow = false;
+    LineRenderer lineRenderer;
 
     void Start()
     {
-        oldPosition = transform.position;
+        //oldPosition = transform.position;
         hapticDevice = GameObject.Find("HapticDevice");
 
         //position-scale relationship
@@ -44,22 +41,19 @@ public class MovementCompensation : MonoBehaviour
         this.transform.localPosition = newPosition;
 
         //Objects for detecting position between the bow and the nut;
-        sourceObjectPosition = GameObject.Find("Nut").transform.position;
-        targetCollider = GameObject.Find("Strings").GetComponent<CapsuleCollider>();
+        nutPosition = GameObject.Find("Nut").transform.position;
+        stringCollider = GameObject.Find("Strings").GetComponent<CapsuleCollider>();
 
+        lineRenderer = GetComponent<LineRenderer>();
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        //angles = hapticDevice.GetComponent<HapticPlugin>().stylusRotationWorld.eulerAngles;
         bowingForce = hapticDevice.GetComponent<HapticPlugin>().touchingDepth * forceScalar;
-        Vector3 closestPoint = targetCollider.ClosestPoint(sourceObjectPosition);
-        bowNutDistance = Vector3.Distance(sourceObjectPosition, closestPoint);
-
-
-        stylusWorldPosition = hapticDevice.GetComponent<HapticPlugin>().stylusPositionWorld;
+        Vector3 closestPoint = stringCollider.ClosestPoint(nutPosition);
+        bowNutDistance = Vector3.Distance(nutPosition, closestPoint);
 
         //Audio Manipulation
         if (mastermixer.GetFloat("Velocity", out vel))
@@ -72,34 +66,39 @@ public class MovementCompensation : MonoBehaviour
             mastermixer.SetFloat("Velocity", bowingSpeed + 0.5f);
             mastermixer.SetFloat("Force", bowingForce);
             mastermixer.SetFloat("Position", bowNutDistance);
-
         }
 
-        //OUTDATED: Get contact point from between the string and the bow
-        //CollisionDetector collisionDetector = hapticString.GetComponent<CollisionDetector>();
-        //bowStringContactPoint = collisionDetector.contactPoint;
-
         //Distance between string and pen
-        float xDist = hapticOmniGrabber.transform.position.x - hapticString.transform.position.x;
-        float zDist = hapticOmniGrabber.transform.position.z - hapticString.transform.position.z;
-        float xzDist = -Mathf.Sqrt(xDist * xDist + zDist * zDist);
-
-        //print("Collision compensator z: " + this.transform.position.z + ", target z: " + target.transform.position.z);
+        float stringPenDistance = Vector3.Distance(hapticPen.transform.position, 
+                                        GameObject.Find("HapticString").GetComponent<CapsuleCollider>().ClosestPoint(hapticPen.transform.position));
 
         //Check for direction collision between the bow vs String a
-        if (this.transform.position.z > hapticOmniGrabber.transform.position.z)
+        if (this.transform.position.z > hapticPen.transform.position.z)
         {
             inFrontOfBow = false;
             if (bowingForce / forceScalar < maxForce)
                 hapticSurface.hlStiffness = Remap(bowingForce / forceScalar, 0.0f, maxForce, 0.0f, maxStiffness);
             else
                 hapticSurface.hlStiffness = maxStiffness;
-        } else if ((this.transform.position.z - this.transform.position.z * 0.6) < hapticOmniGrabber.transform.position.z) {
+        }
+        else if ((this.transform.position.z - this.transform.position.z * 0.1) < hapticPen.transform.position.z)
+        {
             inFrontOfBow = true;
         }
-        this.transform.localPosition = new Vector3(xzDist - (inFrontOfBow ? 1f : 0.0f), stylusWorldPosition.y + 0.25f, this.transform.localPosition.z);
-       
+        this.transform.localPosition = new Vector3(-stringPenDistance - (inFrontOfBow ? 1f : 0.0f), this.transform.localPosition.y, this.transform.localPosition.z);
+
+        //Debuging section: prints of girls and lines of coke
+        print("in front of bow: " + inFrontOfBow+ ", xzDistance: " +stringPenDistance);
+        lineRenderer.SetPosition(0, hapticPen.transform.position);
+        lineRenderer.SetPosition(1, GameObject.Find("HapticString").GetComponent<CapsuleCollider>().ClosestPoint(hapticPen.transform.position));
+    }
         //OUTDATED
+        struct Outdated
+    { //OUTDATED: Get contact point from between the string and the bow
+      //CollisionDetector collisionDetector = hapticString.GetComponent<CollisionDetector>();
+      //bowStringContactPoint = collisionDetector.contactPoint;
+
+        //print("Collision compensator z: " + this.transform.position.z + ", target z: " + target.transform.position.z);
         //offsetDistance = (target.transform.position.x - contactPoint.x);
         //offsetPos = new Vector3(offsetDistance * -1.0f, target.transform.position.y, target.transform.position.z);
         //if (GameObject.Find("HapticString").GetComponent<CollisionDetector>().touching)
@@ -121,7 +120,8 @@ public class MovementCompensation : MonoBehaviour
 
         //Old method of moving the colision box
         //Vector3 offsetPos;
-        //offsetDistance = (Mathf.Tan((angles.y - 270) * Mathf.Deg2Rad)) * (target.transform.position.x - contactPoint.x);
+        //offsetDistance = (Mathf.Tan((angles.y - 270) * Mathf.Deg2Rad)) * (target.transform.position.x - contactPoint.x);}
+
     }
     float Remap(float value, float from1, float to1, float from2, float to2)
     {
