@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 
 public class MovementCompensation : MonoBehaviour
 {
-    public GameObject target;
+    public GameObject hapticOmniGrabber;
     public GameObject hapticString;
     public GameObject tiltMother;
     public GameObject rightHandAnchor;
@@ -15,21 +15,22 @@ public class MovementCompensation : MonoBehaviour
     GameObject hapticDevice;
     public float speedScalar = 0.05f;
     public float forceScalar = 0.05f;
-    Vector3 contactPoint;
+    Vector3 bowStringContactPoint;
     Vector3 oldPosition;
     Vector3 angles;
-    Vector3 stylusWorld;
+    Vector3 stylusWorldPosition;
 
     //distance calculator variables
     Vector3 sourceObjectPosition;
     Collider targetCollider;
 
-    float force;
+    float bowingForce;
     float vel;
-    float position;
-    float speed;
+    float bowNutDistance;
+    float bowingSpeed;
     float offsetDistance;
     float maxForce = 0.2f;
+    float maxStiffness = 0.2f;
 
     bool inFrontOfBow = false;
 
@@ -52,59 +53,53 @@ public class MovementCompensation : MonoBehaviour
     void Update()
     {
 
-        angles = hapticDevice.GetComponent<HapticPlugin>().stylusRotationWorld.eulerAngles;
-        force = hapticDevice.GetComponent<HapticPlugin>().touchingDepth * forceScalar;
+        //angles = hapticDevice.GetComponent<HapticPlugin>().stylusRotationWorld.eulerAngles;
+        bowingForce = hapticDevice.GetComponent<HapticPlugin>().touchingDepth * forceScalar;
         Vector3 closestPoint = targetCollider.ClosestPoint(sourceObjectPosition);
-        position = Vector3.Distance(sourceObjectPosition, closestPoint);
+        bowNutDistance = Vector3.Distance(sourceObjectPosition, closestPoint);
 
 
-        stylusWorld = hapticDevice.GetComponent<HapticPlugin>().stylusPositionWorld;
+        stylusWorldPosition = hapticDevice.GetComponent<HapticPlugin>().stylusPositionWorld;
 
-        
-
-        //tiltMother.transform.RotateAround(new Vector3(0.0f, 0.0f, 0.0f), new Vector3 (1.0f, 0.0f, 0.0f), (rightHandAnchor.transform.rotation.eulerAngles.x + 42.3f - 360.0f));
-        //Vector3 stylusLocal = stylusWorld * Quaternion.Euler(, 0.0f, 0.0f);
-        //print("Absolute position is: " + stylusWorld);
+        //Audio Manipulation
         if (mastermixer.GetFloat("Velocity", out vel))
         {
-            float xVel = hapticDevice.GetComponent<HapticPlugin>().stylusVelocityRaw.x;
-            float zVel = hapticDevice.GetComponent<HapticPlugin>().stylusVelocityRaw.z;
-            speed = Mathf.Sign(xVel) * Mathf.Sqrt(xVel * xVel + zVel * zVel) * speedScalar;
+            float stylusXVel = hapticDevice.GetComponent<HapticPlugin>().stylusVelocityRaw.x;
+            float stylusYvel = hapticDevice.GetComponent<HapticPlugin>().stylusVelocityRaw.z;
+            bowingSpeed = Mathf.Sign(stylusXVel) * Mathf.Sqrt(stylusXVel * stylusXVel + stylusYvel * stylusYvel) * speedScalar;
 
             //Assign values to the Trombamarina Sound Model via the AudioMixer
-            mastermixer.GetFloat("Velocity", out vel);
-            mastermixer.SetFloat("Velocity", speed + 0.5f);
-            mastermixer.SetFloat("Force", force);
-            mastermixer.SetFloat("Position", position);
+            mastermixer.SetFloat("Velocity", bowingSpeed + 0.5f);
+            mastermixer.SetFloat("Force", bowingForce);
+            mastermixer.SetFloat("Position", bowNutDistance);
 
         }
 
-        //Get contact point from between the string and the bow
-        CollisionDetector collisionDetector = hapticString.GetComponent<CollisionDetector>();
-        contactPoint = collisionDetector.contactPoint;
-        
-        float xDist = target.transform.position.x - hapticString.transform.position.x;
-        float zDist = target.transform.position.z - hapticString.transform.position.z;
+        //OUTDATED: Get contact point from between the string and the bow
+        //CollisionDetector collisionDetector = hapticString.GetComponent<CollisionDetector>();
+        //bowStringContactPoint = collisionDetector.contactPoint;
+
+        //Distance between string and pen
+        float xDist = hapticOmniGrabber.transform.position.x - hapticString.transform.position.x;
+        float zDist = hapticOmniGrabber.transform.position.z - hapticString.transform.position.z;
         float xzDist = -Mathf.Sqrt(xDist * xDist + zDist * zDist);
 
         //print("Collision compensator z: " + this.transform.position.z + ", target z: " + target.transform.position.z);
 
-        //one direction collision condition for the bow vs String
-       // Vector3 localZcollisionCompensator 
-        if (this.transform.position.z > target.transform.position.z)
+        //Check for direction collision between the bow vs String a
+        if (this.transform.position.z > hapticOmniGrabber.transform.position.z)
         {
             inFrontOfBow = false;
-            if (force / forceScalar < maxForce)
-                hapticSurface.hlStiffness = Remap(force / forceScalar, 0.0f, maxForce, 0.0f, 0.2f);
+            if (bowingForce / forceScalar < maxForce)
+                hapticSurface.hlStiffness = Remap(bowingForce / forceScalar, 0.0f, maxForce, 0.0f, maxStiffness);
             else
-                hapticSurface.hlStiffness = 0.2f;
-        } else if ((this.transform.position.z - this.transform.position.z * 0.6) < target.transform.position.z) {
+                hapticSurface.hlStiffness = maxStiffness;
+        } else if ((this.transform.position.z - this.transform.position.z * 0.6) < hapticOmniGrabber.transform.position.z) {
             inFrontOfBow = true;
         }
-        //print("Stiffness " + hapticSurface.hlStiffness);
-        this.transform.localPosition = new Vector3(xzDist - (inFrontOfBow ? 20.0f : 0.0f), stylusWorld.y + 0.25f, this.transform.localPosition.z);
+        this.transform.localPosition = new Vector3(xzDist - (inFrontOfBow ? 1f : 0.0f), stylusWorldPosition.y + 0.25f, this.transform.localPosition.z);
        
-        
+        //OUTDATED
         //offsetDistance = (target.transform.position.x - contactPoint.x);
         //offsetPos = new Vector3(offsetDistance * -1.0f, target.transform.position.y, target.transform.position.z);
         //if (GameObject.Find("HapticString").GetComponent<CollisionDetector>().touching)
