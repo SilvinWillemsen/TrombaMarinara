@@ -15,11 +15,10 @@ public class RotationFollower : MonoBehaviour
     void Update()
     {
         transform.rotation = Quaternion.AngleAxis((rightHandAnchor.transform.rotation.eulerAngles.x - 318.0f), new Vector3(-1.0f, 0.0f, 0.0f));
-        //transform.rotation = Quaternion.AngleAxis((rightHandAnchor.transform.rotation.eulerAngles.y - 318.0f), new Vector3(0.0f, 0.0f, 0.0f));
-        //print("controller button: "+OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.RTouch));
-        //print(rightHandAnchor.transform.rotation.eulerAngles);
     }
 
+
+    //temp functions that are not in use now
     Vector3 Calibrate (Vector3 controllerRotation)
     {
         Vector3 callibrationOffset = new Vector3(0,0,0);
@@ -28,5 +27,10 @@ public class RotationFollower : MonoBehaviour
 
         else
             return (callibrationOffset) ;
+    }
+
+    Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
+    {
+        return Quaternion.Euler(angles) * (point - pivot) + pivot;
     }
 }

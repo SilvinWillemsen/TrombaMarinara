@@ -33,8 +33,8 @@ public class MovementCompensation : MonoBehaviour
 
     void Start()
     {
-        //oldPosition = transform.position;
         hapticDevice = GameObject.Find("HapticDevice");
+        lineRenderer = GetComponent<LineRenderer>();
 
         //position-scale relationship
         Vector3 newPosition = new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, 0.5f * this.transform.localScale.z - 0.02f);
@@ -42,10 +42,8 @@ public class MovementCompensation : MonoBehaviour
 
         //Objects for detecting position between the bow and the nut;
         nutPosition = GameObject.Find("Nut").transform.position;
-        stringCollider = GameObject.Find("Strings").GetComponent<CapsuleCollider>();
-
-        lineRenderer = GetComponent<LineRenderer>();
-       
+        stringCollider = GameObject.Find("HapticString").GetComponent<CapsuleCollider>();
+        
     }
 
     // Update is called once per frame
@@ -68,7 +66,6 @@ public class MovementCompensation : MonoBehaviour
             mastermixer.SetFloat("Position", bowNutDistance);
         }
 
-        //Distance between string and pen
         float stringPenDistance = Vector3.Distance(hapticPen.transform.position, 
                                         GameObject.Find("HapticString").GetComponent<CapsuleCollider>().ClosestPoint(hapticPen.transform.position));
 
@@ -86,9 +83,10 @@ public class MovementCompensation : MonoBehaviour
             inFrontOfBow = true;
         }
         this.transform.localPosition = new Vector3(-stringPenDistance - (inFrontOfBow ? 1f : 0.0f), this.transform.localPosition.y, this.transform.localPosition.z);
-
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //Debuging section: prints of girls and lines of coke
-        print("in front of bow: " + inFrontOfBow+ ", xzDistance: " +stringPenDistance);
+        //print("in front of bow: " + inFrontOfBow+ ", xzDistance: " +stringPenDistance);
         lineRenderer.SetPosition(0, hapticPen.transform.position);
         lineRenderer.SetPosition(1, GameObject.Find("HapticString").GetComponent<CapsuleCollider>().ClosestPoint(hapticPen.transform.position));
     }
