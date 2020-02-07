@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class twoAxisPositionFollower : MonoBehaviour
+public class XYPosFollower : MonoBehaviour
 {
     public GameObject objectToFollow;
     public Vector3 offset; //calculated at 0.2
@@ -18,7 +18,6 @@ public class twoAxisPositionFollower : MonoBehaviour
         transform.position = new Vector3(objectToFollow.transform.position.x + offset.x, this.transform.position.y + offset.y, objectToFollow.transform.position.z + offset.z);
 
         if (Input.GetKeyDown("space"))
-            gameObject.GetComponent<twoAxisPositionFollower>().enabled = false;
-
+            GetComponent<XYPosFollower>().enabled = false;
     }
 }

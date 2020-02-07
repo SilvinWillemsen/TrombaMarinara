@@ -22,6 +22,10 @@ AudioMixerController:
     name: Force
   - guid: c1b695258f942414a8ef2e082b3e7fb9
     name: Position
+  - guid: 800751043b77e9b4ab7045253b02bac5
+    name: DampFinger
+  - guid: cdee5f775d9b31048bcfb026bedb4114
+    name: DampFingerForce
   m_AudioMixerGroupViews:
   - guids:
     - 38039d724c5a455428db9be476743d52
@@ -75,12 +79,14 @@ AudioMixerSnapshotController:
   m_FloatValues:
     48ef21d03373b974bac87301fe7e9ea6: 0.147
     a2bd3861c0c3a914a8862520b6137d4d: 10
+    800751043b77e9b4ab7045253b02bac5: 0.5
     f71b7c54eb22fc74b82335123b6ac952: 1
-    c1b695258f942414a8ef2e082b3e7fb9: 0.732
+    c1b695258f942414a8ef2e082b3e7fb9: 0.229
     71fd0f3551cf55d4db1a107c57b2e8cf: 0.5
     dcf14f4502244b144ac76b029354aad7: 0.245
+    cdee5f775d9b31048bcfb026bedb4114: 0.286
     6e1a693ae5edf2248bb6fa6096cc6e0c: 6
-    971fc0eaaacbc6244a5131a6282436b2: 0.147
+    971fc0eaaacbc6244a5131a6282436b2: 0
     57e9bc5bf62c5be4f91ced7d7abadd58: 0.597
     9c2437cbb2ce776409872d358e83e26f: 5.15
     1f32f7dbd2083714caa07a3aa637cbfb: 627
@@ -117,6 +123,10 @@ AudioMixerEffectController:
     m_GUID: 971fc0eaaacbc6244a5131a6282436b2
   - m_ParameterName: Init Frequency
     m_GUID: f71b7c54eb22fc74b82335123b6ac952
+  - m_ParameterName: Pos damp finger
+    m_GUID: 800751043b77e9b4ab7045253b02bac5
+  - m_ParameterName: Force damp fing
+    m_GUID: cdee5f775d9b31048bcfb026bedb4114
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
@@ -137,4 +147,4 @@ AudioMixerEffectController:
     m_GUID: f1c7f74bd87694d449d974406410236a
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
-  m_Bypass: 0
+  m_Bypass: 1
