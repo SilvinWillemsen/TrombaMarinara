@@ -41,7 +41,7 @@ public class MovementCompensation : MonoBehaviour
         this.transform.localPosition = newPosition;
 
         //Objects for detecting position between the bow and the nut;
-        nutPosition = GameObject.Find("Nut").transform.position;
+        nutPosition = GameObject.Find("Nut").transform.localPosition;
         stringCollider = GameObject.Find("Strings").GetComponent<CapsuleCollider>();
         
     }
@@ -64,7 +64,8 @@ public class MovementCompensation : MonoBehaviour
             //Assign values to the Trombamarina Sound Model via the AudioMixer
             mastermixer.SetFloat("Velocity", bowingSpeed + 0.5f);
             mastermixer.SetFloat("Force", bowingForce);
-            mastermixer.SetFloat("Position", (bowNutDistance-0.5f)*2);
+            mastermixer.SetFloat("Position", 2-bowNutDistance);
+            print(bowNutDistance);
         }
 
         float stringPenDistance = Vector3.Distance(hapticPen.transform.position, 
