@@ -52,8 +52,6 @@ public class DampHandController : MonoBehaviour
 
         masterMixer.SetFloat("DampFinger", curStringPos);
         //masterMixer.SetFloat("DampFingerForce", Mathf.Pow(OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.LTouch), 7));
-
-        print("first: "+ OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.LTouch)+", second: "+ OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) + ", third: " + OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger));
     }
 
     float changeStringPos(float cur, bool dir)
